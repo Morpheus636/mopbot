@@ -1,5 +1,8 @@
+guild_id: 1227680269721534635
+
 roles:
   - role_ids:
       - 1227680269792837666
+      - 1227680269792837665
     permissions:
       - manage_server: true
