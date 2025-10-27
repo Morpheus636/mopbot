@@ -1,0 +1,5 @@
+roles:
+  - role_ids:
+      - 1227680269792837666
+    permissions:
+      - manage_server: true
