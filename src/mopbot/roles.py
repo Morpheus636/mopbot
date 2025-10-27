@@ -2,7 +2,7 @@ import discord
 
 from .config import config
 
-def apply_perms(client):
+async def apply_perms(client):
     """Overwrites roles' permissions with the ones configured by the bot."""
     guild = client.get_guild(config["guild_id"])
     for category in config["roles"]:
@@ -11,4 +11,4 @@ def apply_perms(client):
             new_perms = discord.Permissions()
             for perm in configured_perms:
                 setattr(new_perms, perm, configured_perms[perm])
-            guild.get_role(role).edit(permissions=new_perms)
+            await guild.get_role(role).edit(permissions=new_perms)

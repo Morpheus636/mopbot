@@ -5,4 +5,6 @@ roles:
       - 1227680269792837666
       - 1227680269792837665
     permissions:
-      - manage_server: true
+      # See https://discordpy.readthedocs.io/en/stable/api.html?highlight=permissions#discord.Permissions
+      administrator: true
+      manage_guild: true

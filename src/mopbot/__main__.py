@@ -14,6 +14,7 @@ client = discord.Client(intents=intents)
 
 @client.event
 async def on_ready():
-    roles.apply_perms(client)
+    await roles.apply_perms(client)
+    await client.close()
 
 client.run(BOT_TOKEN)

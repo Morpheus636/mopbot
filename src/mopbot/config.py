@@ -7,7 +7,7 @@ with open("config.yaml") as stream:
     config = yaml.safe_load(stream);
 
 
-def validate_config(config):
+def validate(config):
     # Guild ID is required
     assert type(config.get("guild_id")) is int
 
