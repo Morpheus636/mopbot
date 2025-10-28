@@ -1,6 +1,6 @@
+import argparse
 import logging
 import os
-import sys
 
 import discord
 import dotenv
@@ -17,11 +17,15 @@ dotenv.load_dotenv()
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 ENV = os.environ.get("ENV", "production")
 
+# Load command-line arguments
+parser = argparse.ArgumentParser(
+    prog="MopBot", description="A declarative configuration tool for Discord servers."
+)
+parser.add_argument("file", nargs="?", default="config.yaml", help="The config file to use.")
+args = parser.parse_args()
+
 # Load config
-file = "config.yaml"
-if len(sys.argv) > 1:
-    file = sys.argv[1]
-config = configuration.load(file)
+config = configuration.load(args.file)
 configuration.validate(config)
 
 logger.info(f"Using '{ENV}' environment")
@@ -32,11 +36,13 @@ logger.debug(f"Environment: {env}")
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
 
+
 @client.event
 async def on_ready():
     await roles.apply_perms(client, config["roles"], env)
 
     logger.info("Tasks finished. Disconnecting from gateway")
     await client.close()
+
 
 client.run(BOT_TOKEN, log_handler=None)
