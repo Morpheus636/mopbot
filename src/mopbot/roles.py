@@ -1,8 +1,6 @@
 import discord
 
-from .config import config
-
-async def apply_perms(client):
+async def apply_perms(client, config):
     """Overwrites roles' permissions with the ones configured by the bot."""
     guild = client.get_guild(config["guild_id"])
     for category in config["roles"]:

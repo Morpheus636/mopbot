@@ -6,11 +6,10 @@ import jsonschema
 
 from . import data
 
-config = []
-
-# Load configuration file from disk.
-with open("config.yaml") as stream:
-    config = yaml.safe_load(stream);
+def load(file):
+    # Load configuration file from disk.
+    with open(file) as stream:
+        return yaml.safe_load(stream)
 
 def validate(config):
     with open(importlib.resources.files(data)/"schema.json") as stream:
