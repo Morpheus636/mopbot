@@ -1,4 +1,8 @@
+import logging
+
 import discord
+
+logger = logging.getLogger(__name__)
 
 async def apply_perms(client, roles, env):
     """Overwrites roles' permissions with the ones configured by the bot."""
@@ -11,4 +15,5 @@ async def apply_perms(client, roles, env):
                 setattr(new_perms, perm, configured_perms[perm])
     
             role_id = env["roles"][role]
+            logger.info(f"Updating role '{role}' (Role ID: {role_id}): {new_perms}")
             await guild.get_role(role_id).edit(permissions=new_perms)
