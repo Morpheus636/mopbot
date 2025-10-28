@@ -19,18 +19,28 @@ ENV = os.environ.get("ENV", "production")
 
 # Load command-line arguments
 parser = argparse.ArgumentParser(
-    prog="MopBot", description="A declarative configuration tool for Discord servers."
+    prog="mopbot", description="A declarative configuration tool for Discord servers."
 )
 parser.add_argument("file", nargs="?", default="config.yaml", help="The config file to use.")
+parser.add_argument(
+    "-C",
+    "--check",
+    action="store_true",
+    help="Validate the config file against the schema but take no action.",
+)
+args = parser.parse_args
 args = parser.parse_args()
 
 # Load config
 config = configuration.load(args.file)
 configuration.validate(config)
+if args.check is True:
+    exit()
 
 logger.info(f"Using '{ENV}' environment")
 env = config["environments"][ENV]
 logger.debug(f"Environment: {env}")
+
 
 # Setup Discord API
 intents = discord.Intents.default()
