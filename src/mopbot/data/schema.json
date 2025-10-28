@@ -3,24 +3,17 @@
   "title": "Discord Guild Role Permissions Config",
   "type": "object",
   "properties": {
-    "guild_id": {
-      "type": "integer",
-      "minimum": 0,
-      "description": "Discord guild ID as an integer."
-    },
     "roles": {
       "type": "array",
+      "description": "Role definitions and their associated permissions.",
       "items": {
         "type": "object",
         "properties": {
-          "role_ids": {
+          "roles": {
             "type": "array",
-            "items": {
-              "type": "integer",
-              "minimum": 0,
-              "description": "Discord role ID as an integer."
-            },
-            "minItems": 1
+            "items": { "type": "string" },
+            "minItems": 1,
+            "description": "List of role names."
           },
           "permissions": {
             "type": "object",
@@ -78,12 +71,40 @@
             "additionalProperties": false
           }
         },
-        "required": ["role_ids", "permissions"],
+        "required": ["roles", "permissions"],
         "additionalProperties": false
       },
       "minItems": 1
+    },
+    "environments": {
+      "type": "object",
+      "description": "Environment mappings, keyed by environment name (e.g., staging, production).",
+      "patternProperties": {
+        "^[a-zA-Z0-9_-]+$": {
+          "type": "object",
+          "description": "Configuration for a specific environment.",
+          "properties": {
+            "guild_id": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Discord guild ID for this environment."
+            },
+            "roles": {
+              "type": "object",
+              "description": "Maps role names to target role IDs in this environment.",
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          },
+          "required": ["guild_id", "roles"],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     }
   },
-  "required": ["guild_id", "roles"],
+  "required": ["roles", "environments"],
   "additionalProperties": false
 }
