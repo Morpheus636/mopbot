@@ -5,9 +5,18 @@ inputs:
   config_file:
     description: 'Name of the config file relative to the project root.'
     required: false
-    default: 'config.yaml'
+  check:
+    description: 'Validate the config file against the schema but take no action'
+    required: false
+    default: false
+  dry_run: 
+    description: 'Run through the config file but do not apply the changes'
+    required: false
+    default: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-  - ${{ inputs.config_file }}
+    - ${{ inputs.config_file }}
+    - ${{ inputs.check }}
+    - ${{ inputs.dry_run }}

@@ -5,7 +5,6 @@ description = ""
 authors = [
     {name = "Morpheus636",email = "morpheus636@morpheus636.com"}
 ]
-readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "discord-py (>=2.6.4,<3.0.0)",

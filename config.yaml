@@ -1,10 +1,5 @@
 environments:
-  production: 
-    guild_id: 900151360903868476
-    roles: 
-      administrator: 900156515875450941
-      plus: 937794034410340422
-  staging:
+  production:
     guild_id: 1227680269721534635
     roles:
       administrator: 1227680269792837666
