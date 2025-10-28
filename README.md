@@ -5,10 +5,6 @@ A Discord bot for configiuring permissions declaratively in YAML.
 - Declarative configuration for role permissions
 - Support for mapping the same config across multiple guilds, such as a staging server
 
-## To-Do
-- `--check` flag to only run the config schema check.
-- Configuring channel and category permissions.
-
 ## Usage
 ### Environment Variables
 - `BOT_TOKEN`: Required, a bot token for the Discord API
