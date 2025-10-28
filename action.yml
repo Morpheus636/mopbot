@@ -1,0 +1,13 @@
+name: Mopbot
+author: Morpheus636
+description: A declarative configuration tool for Discord servers.
+inputs:
+  config_file:
+    description: 'Name of the config file relative to the project root.'
+    required: false
+    default: 'config.yaml'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+  - ${{ inputs.config_file }}

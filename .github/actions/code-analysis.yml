@@ -1,0 +1,52 @@
+name: Code Analysis
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  code_analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Setup Poetry
+        uses: Gr1N/setup-poetry@v9
+
+      - name: Install Packages
+        run: poetry install
+
+      - name: Flake8 (Linter)
+        run: poetry run flake8
+      
+      - name: isort (Import Sorter)
+        run: poetry run isort
+  
+      - name: Black (Code Formatter)
+        run: find . -type f -name "*.py" | xargs poetry run black
+      
+      - name: Check for Changes
+        run: |
+          if [[ $(git diff --stat) != '' ]]; then
+            echo "changes_detected=true" >> $GITHUB_ENV
+          else
+            echo "changes_detected=false" >> $GITHUB_ENV
+          fi
+    
+    
+      - name: Commit and Push Changes
+        if: env.changes_detected == 'true'
+        run: |
+          git config user.name code-analysis-action
+          git config user.email github-actions@github.com
+          git commit -a -m "Changes by Code Analysis Action" --no-verify
+          git push

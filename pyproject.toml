@@ -18,3 +18,29 @@ dependencies = [
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "flake8 (>=7.3.0,<8.0.0)",
+    "isort (>=7.0.0,<8.0.0)",
+    "black (>=25.9.0,<26.0.0)"
+]
+
+
+[tool.black]
+line-length = 100
+target-version = ['py313']
+include = '\.pyi'
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 100
+include_trailing_comma = "True"
+force_grid_wrap = 0
+use_parentheses = "True"
+combine_as_imports = "True"
+force_alphabetical_sort_within_sections = "True"
+ensure_newline_before_comments = "True"
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+lines_after_imports = 2
