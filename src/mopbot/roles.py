@@ -17,4 +17,5 @@ async def apply_perms(client, roles, env):
 
             role_id = env["roles"][role]
             logger.info(f"Updating role '{role}' (Role ID: {role_id}): {new_perms}")
-            await guild.get_role(role_id).edit(permissions=new_perms)
+            if env["dry_run"] is False:
+                await guild.get_role(role_id).edit(permissions=new_perms)

@@ -21,15 +21,23 @@ ENV = os.environ.get("ENV", "production")
 parser = argparse.ArgumentParser(
     prog="mopbot", description="A declarative configuration tool for Discord servers."
 )
-parser.add_argument("file", nargs="?", default="config.yaml", help="The config file to use.")
+parser.add_argument("file", nargs="?", default="config.yaml", help="The config file to use")
 parser.add_argument(
     "-C",
     "--check",
     action="store_true",
-    help="Validate the config file against the schema but take no action.",
+    help="Validate the config file against the schema but take no action",
+)
+parser.add_argument(
+    "-D",
+    "--dry_run",
+    action="store_true",
+    help="Run through the config file but do not apply the changes",
 )
 args = parser.parse_args
 args = parser.parse_args()
+if args.dry_run is True:
+    logger.warning("Running in dry run mode. Changes will not apply")
 
 # Load config
 config = configuration.load(args.file)
@@ -39,6 +47,7 @@ if args.check is True:
 
 logger.info(f"Using '{ENV}' environment")
 env = config["environments"][ENV]
+env["dry_run"] = args.dry_run
 logger.debug(f"Environment: {env}")
 
 
