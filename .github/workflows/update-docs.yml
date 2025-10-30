@@ -52,10 +52,18 @@ jobs:
           ' README.md > README.md.tmp
           mv README.md.tmp README.md
 
+      - name: Check for Changes
+        run: |
+          if [[ $(git diff --stat) != '' ]]; then
+            echo "changes_detected=true" >> $GITHUB_ENV
+          else
+            echo "changes_detected=false" >> $GITHUB_ENV
+          fi
+
       - name: Commit and Push Changes
         if: env.changes_detected == 'true'
         run: |
-          git config user.name code-analysis-action
+          git config user.name documentation-action
           git config user.email github-actions@github.com
-          git commit -a -m "Changes by Code Analysis Action" --no-verify
+          git commit -a -m "Automation: Update CLI usage documentation" --no-verify
           git push
