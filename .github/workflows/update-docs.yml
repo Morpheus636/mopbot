@@ -1,0 +1,71 @@
+name: Update Documentation
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+
+jobs:
+  update-cli-usage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Setup Poetry
+        uses: Gr1N/setup-poetry@v9
+
+      - name: Install Packages
+        run: poetry install
+
+      - name: Replace command-line usage in README
+        run: |
+          set -euo pipefail
+          # Capture the help output
+          HELP_OUTPUT=$(poetry run python -m mopbot --help)
+          # Use awk to rewrite the section safely
+          awk -v content="$HELP_OUTPUT" '
+            BEGIN { in_block = 0 }
+            /<!--- Begin command usage -->/ {
+              print $0
+              print "```"
+              print content
+              print "```"
+              in_block = 1
+              next
+            }
+            /<!--- End command usage -->/ {
+              print $0
+              in_block = 0
+              next
+            }
+            !in_block
+          ' README.md > README.md.tmp
+          mv README.md.tmp README.md
+
+      - name: Check for Changes
+        run: |
+          if [[ $(git diff --stat) != '' ]]; then
+            echo "changes_detected=true" >> $GITHUB_ENV
+          else
+            echo "changes_detected=false" >> $GITHUB_ENV
+          fi
+      
+      - name: Commit and Create Pull Request
+        if: env.changes_detected == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: documentation-bot
+          base: main
+          commit-message: Automated update of CLI usage docs
+          title: Automated Documentation Update
+          labels: bot
