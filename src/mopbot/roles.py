@@ -18,6 +18,7 @@ class Role:
         this.discord_id = discord_id
         this.guild = guild
         this.perms = discord.Permissions()
+        this._updated_nodes = []
 
     async def update_perms(this, new_perms: dict) -> None:
         """Apples the specified permissions to the stored discord.Permissions object.
@@ -28,13 +29,18 @@ class Role:
             discord.Permissions attributes and the values are booleans.
         """
         for perm in new_perms:
+            if perm in this._updated_nodes:
+                logger.warning(f"Permission '{perm}' for role '{this.config_id}' is being overwritten.")
+            else:
+                this._updated_nodes.append(perm)
             setattr(this.perms, perm, new_perms[perm])
         logger.info(f"Updating role '{this.config_id}' (Role ID: {this.discord_id}): {this.perms}")
 
     async def apply(this) -> None:
         """Applies"""
         logger.info(f"Applying changes to role {this.config_name}")
-        await this.guild.get_role(this.discord_id).edit(permissions=this.perms)
+        role = this.guild.get_role(this.discord_id)
+        await role.edit(permissions=this.perms)
 
 
 async def apply_roles(client: discord.Client, role_definitions: dict, env: dict) -> None:
