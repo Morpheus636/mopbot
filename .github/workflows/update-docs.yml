@@ -1,0 +1,61 @@
+name: Update Documentation
+
+on:
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: write
+
+jobs:
+  update-cli-usage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Setup Poetry
+        uses: Gr1N/setup-poetry@v9
+
+      - name: Install Packages
+        run: poetry install
+
+      - name: Replace command-line usage in README
+        run: |
+          set -euo pipefail
+          # Capture the help output
+          HELP_OUTPUT=$(poetry run python -m mopbot --help)
+          # Use awk to rewrite the section safely
+          awk -v content="$HELP_OUTPUT" '
+            BEGIN { in_block = 0 }
+            /<!--- Begin command usage -->/ {
+              print $0
+              print "```"
+              print content
+              print "```"
+              in_block = 1
+              next
+            }
+            /<!--- End command usage -->/ {
+              print $0
+              in_block = 0
+              next
+            }
+            !in_block
+          ' README.md > README.md.tmp
+          mv README.md.tmp README.md
+
+      - name: Commit and Push Changes
+        if: env.changes_detected == 'true'
+        run: |
+          git config user.name code-analysis-action
+          git config user.email github-actions@github.com
+          git commit -a -m "Changes by Code Analysis Action" --no-verify
+          git push

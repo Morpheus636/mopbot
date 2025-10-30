@@ -37,7 +37,9 @@ jobs:
 ```
 
 ### Command-Line
-See `mopbot --help` for information about command-line arguments.
-
+<!--- Begin command usage -->
+```
+```
+<!--- End command usage -->
 ### Config File
 See the [example config file](/config.yaml) and the [JSON Schema](/src/mopbot/data/schema.json).
