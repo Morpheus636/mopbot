@@ -39,7 +39,7 @@ class Role:
 
 async def apply_roles(client: discord.Client, role_definitions: dict, env: dict) -> None:
     """Overwrites roles' permissions with the ones configured by the bot.
-    
+
     Args:
         client (discord.Client): A connected discord.py client for making API calls.
         role_definitions (list): All role definitions from the config file (see schema.json).
