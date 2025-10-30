@@ -58,7 +58,7 @@ client = discord.Client(intents=intents)
 
 @client.event
 async def on_ready():
-    await roles.apply_perms(client, config["roles"], env)
+    await roles.apply_roles(client, config["roles"], env)
 
     logger.info("Tasks finished. Disconnecting from gateway")
     await client.close()

@@ -12,4 +12,9 @@ roles:
     permissions:
       # See https://discordpy.readthedocs.io/en/stable/api.html?highlight=permissions#discord.Permissions
       administrator: true
-      manage_guild: true
+
+  - roles:
+      - administrator
+    name: Administrators
+    color: "#88001b"
+    hoist: true
