@@ -21,6 +21,7 @@
           },
           "color": {
             "type": "string",
+            "pattern": "^#?[0-9A-Fa-f]{6}$",
             "description": "The hexadecimal color code of the role. Leading # is optional."
           },
           "hoist": {
