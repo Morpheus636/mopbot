@@ -15,5 +15,4 @@ roles:
 
   - roles:
       - administrator
-    permissions:
-      manage_guild: true
+    hoist: true

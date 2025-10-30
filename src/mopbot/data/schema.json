@@ -13,7 +13,23 @@
             "type": "array",
             "items": { "type": "string" },
             "minItems": 1,
-            "description": "List of role names."
+            "description": "List of role configuration identifiers."
+          },
+          "name": {
+            "type": "string",
+            "description": "The role's display name."
+          },
+          "color": {
+            "type": "string",
+            "description": "The hexadecimal color code of the role. Leading # is optional."
+          },
+          "hoist": {
+            "type": "boolean",
+            "description": "Whether the role is displayed separately."
+          },
+          "mentionable": {
+            "type": "boolean",
+            "description": "Whether the role can be mentioned by everyone."
           },
           "permissions": {
             "type": "object",
@@ -81,7 +97,7 @@
             "additionalProperties": false
           }
         },
-        "required": ["roles", "permissions"],
+        "required": ["roles"],
         "additionalProperties": false
       },
       "minItems": 1
@@ -101,7 +117,7 @@
             },
             "roles": {
               "type": "object",
-              "description": "Maps role names to target role IDs in this environment.",
+              "description": "Maps role configuration identifiers to target role IDs in this environment.",
               "additionalProperties": {
                 "type": "integer",
                 "minimum": 0
