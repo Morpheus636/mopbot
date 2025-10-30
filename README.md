@@ -39,6 +39,18 @@ jobs:
 ### Command-Line
 <!--- Begin command usage -->
 ```
+usage: mopbot [-h] [-C] [-D] [file]
+
+A declarative configuration tool for Discord servers.
+
+positional arguments:
+  file           The config file to use
+
+options:
+  -h, --help     show this help message and exit
+  -C, --check    Validate the config file against the schema but take no
+                 action
+  -D, --dry_run  Run through the config file but do not apply the changes
 ```
 <!--- End command usage -->
 
