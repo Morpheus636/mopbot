@@ -12,4 +12,8 @@ roles:
     permissions:
       # See https://discordpy.readthedocs.io/en/stable/api.html?highlight=permissions#discord.Permissions
       administrator: true
+
+  - roles:
+      - administrator
+    permissions:
       manage_guild: true
