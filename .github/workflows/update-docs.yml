@@ -1,7 +1,7 @@
 name: Update Documentation
 
 on:
-  pull_request:
+  push:
     branches: [ main ]
 
 permissions:
@@ -59,11 +59,13 @@ jobs:
           else
             echo "changes_detected=false" >> $GITHUB_ENV
           fi
-
-      - name: Commit and Push Changes
+      
+      - name: Commit and Create Pull Request
         if: env.changes_detected == 'true'
-        run: |
-          git config user.name documentation-action
-          git config user.email github-actions@github.com
-          git commit -a -m "Automation: Update CLI usage documentation" --no-verify
-          git push
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: documentation-bot
+          base: main
+          commit-message: Automated update of CLI usage docs
+          title: Automated Documentation Update
+          labels: bot
